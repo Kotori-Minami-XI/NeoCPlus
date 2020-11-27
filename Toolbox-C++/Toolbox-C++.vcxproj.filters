@@ -38,11 +38,5 @@
     <ClCompile Include="testFairMutex.cpp">
       <Filter>测试文件</Filter>
     </ClCompile>
-    <ClCompile Include="testGUI.cpp">
-      <Filter>测试文件</Filter>
-    </ClCompile>
-    <ClCompile Include="testThreadPool.cpp">
-      <Filter>测试文件</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
