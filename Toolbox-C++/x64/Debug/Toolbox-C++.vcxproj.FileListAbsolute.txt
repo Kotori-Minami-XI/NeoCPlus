@@ -1,2 +1,0 @@
-C:\Users\udrt\Desktop\repo\zengkm\C++\NeoCPlus\Toolbox-C++\x64\Debug\Toolbox-C++.exe
-C:\Users\udrt\Desktop\repo\zengkm\C++\NeoCPlus\Toolbox-C++\x64\Debug\Toolbox-C++.pdb
