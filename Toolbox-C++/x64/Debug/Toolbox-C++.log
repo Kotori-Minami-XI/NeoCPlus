@@ -1,0 +1,5 @@
+﻿  FairMutex.cpp
+  testFairMutex.cpp
+C:\Users\udrt\Desktop\repo\zengkm\C++\NeoCPlus\Toolbox-C++\testFairMutex.cpp(51,13): warning C4326: “main”的返回类型应为“int”而非“void”
+  正在生成代码...
+  Toolbox-C++.vcxproj -> C:\Users\udrt\Desktop\repo\zengkm\C++\NeoCPlus\Toolbox-C++\x64\Debug\Toolbox-C++.exe

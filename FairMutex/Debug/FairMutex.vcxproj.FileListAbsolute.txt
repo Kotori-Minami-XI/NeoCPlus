@@ -1,2 +1,0 @@
-C:\Users\udrt\Desktop\repo\zengkm\C++\FairMutex\Debug\FairMutex.exe
-C:\Users\udrt\Desktop\repo\zengkm\C++\FairMutex\Debug\FairMutex.pdb
