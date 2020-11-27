@@ -1,3 +1,5 @@
+#define SLEEP_TIME 400
+
 #include <vector>
 #include "FairMutex.h"
 
@@ -45,11 +47,6 @@ static void testFairMutexBasicFunction() {
 	}
 
 	printf("------------ testFairMutexBasicFunction ≤‚ ‘≥…π¶ ------------ \n");
-}
-
-
-void main() {
-	testFairMutexBasicFunction();
 }
 
 

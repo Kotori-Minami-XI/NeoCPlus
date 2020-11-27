@@ -1,8 +1,6 @@
 #ifndef FAIRMUTEX_H
 #define FAIRMUTEX_H
 
-#define SLEEP_TIME 400
-
 #include <stdio.h>
 #include <string>
 #include <iostream>

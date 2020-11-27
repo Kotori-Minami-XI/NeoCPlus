@@ -27,12 +27,21 @@
     <ClInclude Include="FairMutex.h">
       <Filter>头文件\fairMutex</Filter>
     </ClInclude>
+    <ClInclude Include="threadPool.h">
+      <Filter>头文件\fairMutex</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FairMutex.cpp">
       <Filter>源文件\fairMutex</Filter>
     </ClCompile>
     <ClCompile Include="testFairMutex.cpp">
+      <Filter>测试文件</Filter>
+    </ClCompile>
+    <ClCompile Include="testGUI.cpp">
+      <Filter>测试文件</Filter>
+    </ClCompile>
+    <ClCompile Include="testThreadPool.cpp">
       <Filter>测试文件</Filter>
     </ClCompile>
   </ItemGroup>

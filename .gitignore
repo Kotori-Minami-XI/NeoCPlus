@@ -32,6 +32,10 @@
 *.app
 
 # VS 项目.vs文件
+
+Toolbox-C++/x64/Debug/Toolbox-C++.pdb
+
+.vs/
 */.vs
 */x64
 */x32
