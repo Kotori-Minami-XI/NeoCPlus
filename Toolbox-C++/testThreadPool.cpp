@@ -2,15 +2,19 @@
 
 void testThreadPoolUnion();
 bool testThreadPoolInit();
+bool testAddTask();
 
 void testThreadPoolUnion() {
 	if (!testThreadPoolInit()) {
 		printf("------------ 单元测试threadPool失败: 用例testThreadPoolInit失败 × ------------ \n");
 		return;
 	}
+	if (!testAddTask()) {
+		printf("------------ 单元测试threadPool失败: 用例testAddTask失败 × ------------ \n");
+		return;
+	}
 
 }
-
 
 bool testThreadPoolInit() {
 	printf("------------ testThreadPoolInit 测试开始 ------------ \n");
@@ -79,11 +83,24 @@ bool testThreadPoolInit() {
 	return true;
 }
 
+void foo() {
+	printf("线程 %lu 正在执行 foo\n", GetCurrentThreadId());
+}
 
+bool testAddTask() {
+	printf("----------- testAddTask 测试开始 -------------- \n");
+	int numOfTasks = 100;
+	threadPool pool = threadPool(3);
+	for (int i = 0; i < numOfTasks; i++) {
+		pool.addTask(foo);
+	}
+
+	printf("----------- testAddTask 测试失败 × ----------- \n");
+	printf("----------- testAddTask 测试成功 √ ----------- \n");
+	return true;
+}
 
 void main() {	
-	testThreadPoolInit();
-
-
-
+	testThreadPoolUnion();
+	testAddTask();
 }

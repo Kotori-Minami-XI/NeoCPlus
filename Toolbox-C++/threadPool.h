@@ -9,14 +9,17 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <iostream>
+#include <functional>
 
 #include <string>
 
 #include <vector>
+#include <queue>
 
 #include <mutex>
 #include <thread>
 
+#include <windows.h>
 
 using namespace std;
 
@@ -25,6 +28,9 @@ static const string ErrorTypeMsg[NUM_ERROR_TYPE] = {"UNKNOWN_ERROR", "INVALID_PA
 
 static enum LogLevel { LOG_MINI_LEVEL, LOG_MEDIUM_LEVEL, LOG_HIGH_LEVEL, LOG_FULL_LEVEL};
 static const string LogLevelMsg[NUM_LOG_LEVEL] = { "LOG_MINI_LEVEL", "LOG_MEDIUM_LEVEL", "LOG_FULL_LEVEL", "LOG_FULL_LEVEL" };
+
+static mutex mtx;
+static condition_variable cv;
 
 class threadPool
 {
@@ -44,13 +50,47 @@ public:
 
 		this->poolSize = poolSize;
 		this->logLevel = (LogLevel)logLevel;
-		threadVector = vector<thread*>(this->poolSize);
 
+		initThreadVector();
 	}
+
+	void addTask(void (*p)()) {
+		function<void()> task;
+		task = p;
+		taskQueue.push(task);
+	}
+
 private:
 	int poolSize;
 	LogLevel logLevel;
 	vector<thread*> threadVector;
+	queue<function<void()>> taskQueue;
+
+	void initThreadVector(){
+		threadVector = vector<thread*>(this->poolSize);
+		for (int i = 0; i < this->poolSize; i++) {
+			threadVector[i] = new thread(&threadPool::threadRun, this);
+		}
+	}
+
+	void threadRun() {
+		while (true) {
+			unique_lock<mutex> locker(mtx);
+			while (taskQueue.empty()) {
+				cv.wait(locker);
+			}
+
+			// 队首任务出列
+			function<void()> task = taskQueue.front();
+			taskQueue.pop();
+
+			// 下一个线程获得任务
+			locker.unlock();
+			cv.notify_one();
+
+			task();
+		}
+	}
 
 	void LogDebug(LogLevel traceLevel, const char* format, ...) {
 		if (this->logLevel >= traceLevel) {
