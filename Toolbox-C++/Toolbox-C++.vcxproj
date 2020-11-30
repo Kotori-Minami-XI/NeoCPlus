@@ -25,6 +25,8 @@
   <ItemGroup>
     <ClCompile Include="FairMutex.cpp" />
     <ClCompile Include="testFairMutex.cpp" />
+    <ClCompile Include="testThreadPool.cpp" />
+    <ClCompile Include="threadPool.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

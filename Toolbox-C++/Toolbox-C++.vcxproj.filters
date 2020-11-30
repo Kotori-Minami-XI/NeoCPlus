@@ -22,13 +22,19 @@
     <Filter Include="测试文件">
       <UniqueIdentifier>{a1435f51-34c5-4475-8cff-c5233a48d677}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\threadPool">
+      <UniqueIdentifier>{c71c627d-64e5-4fe8-9e15-a651498bbe57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\threadPool">
+      <UniqueIdentifier>{14c3bb0e-081e-4c94-bdab-eb7d117a2311}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FairMutex.h">
       <Filter>头文件\fairMutex</Filter>
     </ClInclude>
     <ClInclude Include="threadPool.h">
-      <Filter>头文件\fairMutex</Filter>
+      <Filter>头文件\threadPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +42,12 @@
       <Filter>源文件\fairMutex</Filter>
     </ClCompile>
     <ClCompile Include="testFairMutex.cpp">
+      <Filter>测试文件</Filter>
+    </ClCompile>
+    <ClCompile Include="threadPool.cpp">
+      <Filter>源文件\threadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="testThreadPool.cpp">
       <Filter>测试文件</Filter>
     </ClCompile>
   </ItemGroup>
