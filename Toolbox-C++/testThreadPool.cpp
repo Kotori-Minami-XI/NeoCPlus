@@ -80,27 +80,77 @@ bool testThreadPoolInit() {
 		return false;
 	}
 	printf("----------- testThreadPoolInit 测试成功 √ ----------- \n");
+	printf("\n");
 	return true;
 }
 
-void foo() {
-	printf("线程 %lu 正在执行 foo\n", GetCurrentThreadId());
-}
+
 
 bool testAddTask() {
 	printf("----------- testAddTask 测试开始 -------------- \n");
+
+	// 自定义任务 BitMapTask
+	class BitMapTask : public Task{
+	public:
+		BitMapTask(int taskId, int bitId, vector<bool>* bitMap) : Task(taskId) {
+			this->bitId = bitId;
+			this->bitMap = bitMap;
+		}
+		vector<bool>* bitMap;
+		int bitId;
+		void setBitMap() {
+			//printf("bitId=%d 执行setBitMap中... \n", bitId);
+
+			if (bitId >= bitMap->size()) {
+				printf("错误：bitMap越界 bitId=%d \n", bitId);
+			}
+			(*bitMap)[bitId] = true;
+			//cout << bitMap[bitId] << endl;
+		}
+		void runTask() {
+			setBitMap();
+		}
+	};
+
 	int numOfTasks = 100;
-	threadPool pool = threadPool(3);
+	int numOfThreads = 4;
+	vector<bool> bitMap(numOfTasks, false);
+
+	threadPool pool = threadPool(numOfThreads);
 	for (int i = 0; i < numOfTasks; i++) {
-		pool.addTask(foo);
+		pool.addTask(new BitMapTask(i, i, &bitMap));
 	}
 
-	printf("----------- testAddTask 测试失败 × ----------- \n");
+	Sleep(2000);
+
+	// 检查 BitMap
+	int errorCount = 0;
+	for (int i = 0; i < numOfTasks; i++) {
+		cout << bitMap[i] << endl;
+		if (bitMap[i] == 0) {
+			errorCount++;
+		}
+	}
+	if (errorCount > 0) {
+		printf("----------- testAddTask 测试失败 × ----------- \n");
+		printf("bitMap未能完全置位 errorCount=%d\n", errorCount);
+		return false;
+	}
+
+
 	printf("----------- testAddTask 测试成功 √ ----------- \n");
+	printf("\n");
 	return true;
 }
 
+
+void f(int& a) {
+	a++;
+}
+
 void main() {	
-	testThreadPoolUnion();
+	//testThreadPoolUnion();
+	testThreadPoolInit();
 	testAddTask();
+
 }

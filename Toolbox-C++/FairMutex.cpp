@@ -36,11 +36,12 @@ void fairMutex::lock() {
  *           自己陷入休眠则可能还是会自己抢到锁，使其他线程陷入饥饿状态
  * 输入参数：None
  * 返回参数：void
- * 输出结果：唤醒等待队列的第一个线程，并让自己陷入休眠
+ * 输出结果：唤醒等待队列的第一个线程，并让自己陷入休眠1ms
  *********************************************************************/
 void fairMutex::unlock() {
 	unique_lock<mutex> locker(mtx);
 	isLocked = false;
+	locker.unlock();
 	cv.notify_one();
-	cv.wait(locker);
+	Sleep(1);
 }

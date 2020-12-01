@@ -29,8 +29,14 @@ static const string ErrorTypeMsg[NUM_ERROR_TYPE] = {"UNKNOWN_ERROR", "INVALID_PA
 static enum LogLevel { LOG_MINI_LEVEL, LOG_MEDIUM_LEVEL, LOG_HIGH_LEVEL, LOG_FULL_LEVEL};
 static const string LogLevelMsg[NUM_LOG_LEVEL] = { "LOG_MINI_LEVEL", "LOG_MEDIUM_LEVEL", "LOG_FULL_LEVEL", "LOG_FULL_LEVEL" };
 
-static mutex mtx;
-static condition_variable cv;
+class Task {
+public:
+	Task(int taskId) {
+		this->taskId = taskId;
+	}
+	int taskId;
+	virtual void runTask()=0;
+};
 
 class threadPool
 {
@@ -54,23 +60,43 @@ public:
 		initThreadVector();
 	}
 
-	void addTask(void (*p)()) {
-		function<void()> task;
-		task = p;
+	threadPool(const threadPool&) {
+		return;
+	}
+
+	~threadPool() {
+		cv.notify_all(); // 唤醒所有线程执行
+		for (int i = 0; i < this->poolSize; i++) {
+			threadVector[i]->detach();
+		}
+	}
+
+	void addTask(Task *task) {
 		taskQueue.push(task);
 	}
 
+	vector<thread*>& getThreadVector() {
+		return threadVector;
+	}
+
 private:
+
 	int poolSize;
 	LogLevel logLevel;
 	vector<thread*> threadVector;
-	queue<function<void()>> taskQueue;
+	queue<Task*> taskQueue;
+	mutex mtx;
+	condition_variable cv;
 
 	void initThreadVector(){
 		threadVector = vector<thread*>(this->poolSize);
 		for (int i = 0; i < this->poolSize; i++) {
 			threadVector[i] = new thread(&threadPool::threadRun, this);
 		}
+	}
+
+	void entry(Task *task) {
+		task->runTask();
 	}
 
 	void threadRun() {
@@ -81,14 +107,15 @@ private:
 			}
 
 			// 队首任务出列
-			function<void()> task = taskQueue.front();
+			Task* task = taskQueue.front();
 			taskQueue.pop();
 
 			// 下一个线程获得任务
 			locker.unlock();
 			cv.notify_one();
 
-			task();
+			function<void(Task*)> func = bind(&threadPool::entry, this, task);
+			func(task);
 		}
 	}
 

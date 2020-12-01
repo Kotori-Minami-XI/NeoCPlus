@@ -49,6 +49,9 @@ static void testFairMutexBasicFunction() {
 	printf("------------ testFairMutexBasicFunction ≤‚ ‘≥…π¶ ------------ \n");
 }
 
+static void main2() {
+	testFairMutexBasicFunction();
+}
 
 
 
