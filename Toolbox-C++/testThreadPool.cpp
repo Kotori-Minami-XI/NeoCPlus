@@ -16,6 +16,7 @@ void testThreadPoolUnion() {
 
 }
 
+
 bool testThreadPoolInit() {
 	printf("------------ testThreadPoolInit 测试开始 ------------ \n");
 	bool flag = true;
@@ -85,7 +86,6 @@ bool testThreadPoolInit() {
 }
 
 
-
 bool testAddTask() {
 	printf("----------- testAddTask 测试开始 -------------- \n");
 
@@ -105,7 +105,7 @@ bool testAddTask() {
 				printf("错误：bitMap越界 bitId=%d \n", bitId);
 			}
 			(*bitMap)[bitId] = true;
-			//cout << bitMap[bitId] << endl;
+			//cout << (*bitMap)[bitId] << endl;
 		}
 		void runTask() {
 			setBitMap();
@@ -121,12 +121,12 @@ bool testAddTask() {
 		pool.addTask(new BitMapTask(i, i, &bitMap));
 	}
 
+	cout << "等待线程池执行任务..." << endl;
 	Sleep(2000);
-
+	cout << "线程池任务执行完毕，统计中..." << endl;
 	// 检查 BitMap
 	int errorCount = 0;
 	for (int i = 0; i < numOfTasks; i++) {
-		cout << bitMap[i] << endl;
 		if (bitMap[i] == 0) {
 			errorCount++;
 		}
@@ -136,7 +136,7 @@ bool testAddTask() {
 		printf("bitMap未能完全置位 errorCount=%d\n", errorCount);
 		return false;
 	}
-
+	cout << "统计结果：errorCount=" + to_string(errorCount) + " / numOfTasks=" + to_string(numOfTasks) << endl;
 
 	printf("----------- testAddTask 测试成功 √ ----------- \n");
 	printf("\n");
@@ -144,13 +144,9 @@ bool testAddTask() {
 }
 
 
-void f(int& a) {
-	a++;
-}
-
 void main() {	
-	//testThreadPoolUnion();
-	testThreadPoolInit();
-	testAddTask();
+	testThreadPoolUnion();
+	//testThreadPoolInit();
+	//testAddTask();
 
 }
