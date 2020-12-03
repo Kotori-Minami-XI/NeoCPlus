@@ -19,14 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FairMutex.h" />
-    <ClInclude Include="threadPool.h" />
+    <ClCompile Include="src\FairMutex.cpp" />
+    <ClCompile Include="src\threadPool.cpp" />
+    <ClCompile Include="test\testFairMutex.cpp" />
+    <ClCompile Include="test\testThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FairMutex.cpp" />
-    <ClCompile Include="testFairMutex.cpp" />
-    <ClCompile Include="testThreadPool.cpp" />
-    <ClCompile Include="threadPool.cpp" />
+    <ClInclude Include="src\include\FairMutex.h" />
+    <ClInclude Include="src\include\threadPool.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -88,6 +88,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\udrt\Desktop\repo\zengkm\C++\NeoCPlus\Toolbox-C++\src\include;$(IncludePath)</IncludePath>
+    <SourcePath>C:\Users\udrt\Desktop\repo\zengkm\C++\NeoCPlus\Toolbox-C++\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
