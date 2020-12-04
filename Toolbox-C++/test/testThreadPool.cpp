@@ -144,9 +144,6 @@ bool testAddTask() {
 }
 
 
-void main() {	
+void main_testThreadPool() {	
 	testThreadPoolUnion();
-	//testThreadPoolInit();
-	//testAddTask();
-
 }
