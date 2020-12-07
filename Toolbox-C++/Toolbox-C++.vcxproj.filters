@@ -42,12 +42,27 @@
     <ClCompile Include="src\threadPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\KDTree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test\testKDTree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\FairMutex.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\include\threadPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\KDTree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
