@@ -7,6 +7,7 @@
 #include "Utils.h"
 
 #define MAX(a,b) (a >= b ? a : b)
+#define MIN(a,b) (a <= b ? a : b)
 
 using namespace std;
 
@@ -210,16 +211,47 @@ public:
 		if (!node) {
 			return;
 		}
-		if (!node->getLeftNode()) {
+		if (node->getLeftNode()) {
 			iterateTree(node->getLeftNode(), func);
 		}
 
 		(node->*func)();
 
-		if (!node->getRightNode()) {
+		if (node->getRightNode()) {
 			iterateTree(node->getRightNode(), func);
 		}
 	}
+
+	KDNode* findNearestNode(KDNode* currentNode, KDNode* targetNode) {
+		double minDistance = (double)LONG_MAX;
+		int depth = 0;
+		helper(currentNode, targetNode, depth, minDistance);
+	}
+
+	KDNode* helper(KDNode* currentNode, KDNode* targetNode, int depth, double& minDistance) {
+		if (currentNode->getLeftNode() && targetNode->nodeValue() <= currentNode->nodeValue()) {
+			helper(currentNode->getLeftNode(), targetNode, depth+1, minDistance);
+		}
+		else if (currentNode->getRightNode() && targetNode->nodeValue() > currentNode->nodeValue()) {
+			helper(currentNode->getRightNode(), targetNode, depth + 1, minDistance);
+		}
+
+		if (!currentNode->getLeftNode() && !currentNode->getRightNode()) {
+			minDistance = MIN(minDistance, getAbsoluteDistance(currentNode, targetNode));
+
+
+
+			return currentNode;
+		}
+
+		minDistance = MIN(minDistance, getAbsoluteDistance(currentNode, targetNode));
+		//if (getAbsoluteDistance(currentNode, targetNode) <= )
+	}
+
+
+
+
+
 private:
 	unsigned int nextNodeId;
 	int dimension;

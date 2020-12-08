@@ -4,6 +4,7 @@ static bool testPrintNode();
 static bool testInitKDTree();
 static bool testInsertKDNode();
 static bool testGetAbsoluteDistance();
+static bool testIterateTree();
 
 /*********************************************************************
  * 函数名称：testPrintNode
@@ -128,7 +129,14 @@ static bool testGetAbsoluteDistance() {
 }
 
 
-static void testIterateTree() {
+/*********************************************************************
+ * 函数名称：testIterateTree
+ * 函数功能：测试树的结构是否正确，采用中序遍历
+ * 输入参数：None
+ * 返回参数：void
+ * 输出结果：未抛出异常，返回true
+ *********************************************************************/
+static bool testIterateTree() {
 	printf("------------ testIterateTree 测试开始 -------------- \n");
 	vector<int> rootNode = vector<int>{ 1, 2, 3, 4 };
 	vector<int> node1 = vector<int>{ 4, 3, 1, 1 };
@@ -146,14 +154,21 @@ static void testIterateTree() {
 }
 
 
+
+void f() {
+	cout << "f" << endl;
+}
+
+
 void main() {
-    testPrintNode();
-	testInitKDTree();
-	testInsertKDNode();
-	testGetAbsoluteDistance();
-
-	testIterateTree();
-
+ //   testPrintNode();
+	//testInitKDTree();
+	//testInsertKDNode();
+	//testGetAbsoluteDistance();
+	//testIterateTree();
+	void* p;
+	p = f;
+	((void (*)())p)();
 }
 
 
