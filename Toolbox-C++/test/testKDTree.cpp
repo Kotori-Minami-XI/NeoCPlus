@@ -10,7 +10,7 @@ static bool testIterateTree();
  * 函数名称：testPrintNode
  * 函数功能：测试printNode是否能输出node的相关信息
  * 输入参数：None
- * 返回参数：void
+ * 返回参数：bool
  * 输出结果：未抛出异常并打印Node信息，返回true
  *********************************************************************/
 static bool testPrintNode() {
@@ -33,7 +33,7 @@ static bool testPrintNode() {
  * 函数名称：testInitKDTree
  * 函数功能：测试KDTree的构造函数是否正常
  * 输入参数：None
- * 返回参数：void
+ * 返回参数：bool
  * 输出结果：未抛出异常，返回true
  *********************************************************************/
 static bool testInitKDTree() {
@@ -55,7 +55,7 @@ static bool testInitKDTree() {
  * 函数名称：testInsertKDNode
  * 函数功能：测试KDTree的插入函数是否正常
  * 输入参数：None
- * 返回参数：void
+ * 返回参数：bool
  * 输出结果：未抛出异常，返回true
  *********************************************************************/
 static bool testInsertKDNode() {
@@ -87,7 +87,7 @@ static bool testInsertKDNode() {
  * 函数名称：testGetAbsoluteDistance
  * 函数功能：测试getAbsoluteDistance算出来的两点距离是否正确
  * 输入参数：None
- * 返回参数：void
+ * 返回参数：bool
  * 输出结果：未抛出异常，返回true
  *********************************************************************/
 static bool testGetAbsoluteDistance() {
@@ -133,7 +133,7 @@ static bool testGetAbsoluteDistance() {
  * 函数名称：testIterateTree
  * 函数功能：测试树的结构是否正确，采用中序遍历
  * 输入参数：None
- * 返回参数：void
+ * 返回参数：bool
  * 输出结果：未抛出异常，返回true
  *********************************************************************/
 static bool testIterateTree() {
@@ -155,20 +155,13 @@ static bool testIterateTree() {
 
 
 
-void f() {
-	cout << "f" << endl;
-}
-
-
-void main() {
+void main3() {
  //   testPrintNode();
 	//testInitKDTree();
 	//testInsertKDNode();
 	//testGetAbsoluteDistance();
 	//testIterateTree();
-	void* p;
-	p = f;
-	((void (*)())p)();
+
 }
 
 

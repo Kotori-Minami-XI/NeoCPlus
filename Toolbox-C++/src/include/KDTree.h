@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-#include "Utils.h"
+#include "ColorPrint.h"
 
 #define MAX(a,b) (a >= b ? a : b)
 #define MIN(a,b) (a <= b ? a : b)
@@ -17,7 +17,7 @@ public:
 
 	KDNode(unsigned int nodeId, vector<int>* nodeVector, unsigned int nodeDepth) {
 		this->nodeId = nodeId;
-		this->demension = (*nodeVector).size();
+		this->demension = (unsigned int)(*nodeVector).size();
 		this->nodeDepth = nodeDepth;
 		this->nodeVector = nodeVector;
 		this->nodeInfoLevel = NODEINFO_MINI;
@@ -53,7 +53,7 @@ public:
 		return this->rightNode;
 	}
 
-	int getVectorElement(int index) {
+	int getVectorElement(unsigned int index) {
 		if (index >= this->demension) {
 			throw exception("fatal error: index should be below the dimension of the node!");
 			return -1;
@@ -94,7 +94,7 @@ private:
 class KDTree {
 public:
 	KDTree(vector<int>* rootNodeVector, bool allowedMultipleDeimension = false) {
-		this->dimension = (*rootNodeVector).size();
+		this->dimension = (unsigned int)(*rootNodeVector).size();
 		this->allowedMultipleDeimension = allowedMultipleDeimension;
 		this->nextNodeId = 0;
 

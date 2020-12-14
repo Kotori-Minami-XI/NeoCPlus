@@ -48,7 +48,13 @@
     <ClCompile Include="test\testKDTree.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils.cpp">
+    <ClCompile Include="src\ColorPrint.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StringBuilder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test\testStringBuilder.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,7 +68,10 @@
     <ClInclude Include="src\include\KDTree.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\Utils.h">
+    <ClInclude Include="src\include\ColorPrint.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\StringBuilder.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

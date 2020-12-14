@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef COLOR_PRINT_H
+#define COLOR_PRINT_H
 
 #include <string>
 
@@ -50,6 +50,6 @@ public:
 		BackColor backColor = BackColor::BACK_BLACK);
 };
 
-#endif /* UTILS_H */
+#endif /* COLOR_PRINT_H */
 
 

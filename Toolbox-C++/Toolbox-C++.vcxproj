@@ -22,16 +22,19 @@
     <ClCompile Include="src\KDTree.cpp" />
     <ClCompile Include="src\FairMutex.cpp" />
     <ClCompile Include="src\threadPool.cpp" />
+    <ClCompile Include="src\StringBuilder.cpp" />
     <ClCompile Include="test\testFairMutex.cpp" />
     <ClCompile Include="test\testKDTree.cpp" />
+    <ClCompile Include="test\testStringBuilder.cpp" />
     <ClCompile Include="test\testThreadPool.cpp" />
-    <ClCompile Include="src\Utils.cpp" />
+    <ClCompile Include="src\ColorPrint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\KDTree.h" />
     <ClInclude Include="src\include\FairMutex.h" />
     <ClInclude Include="src\include\threadPool.h" />
-    <ClInclude Include="src\include\Utils.h" />
+    <ClInclude Include="src\include\ColorPrint.h" />
+    <ClInclude Include="src\include\StringBuilder.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
