@@ -46,11 +46,43 @@ public:
 	}
 
 	StringBuilder& deleteCharAt(unsigned int index) {
+		if (index >= this->totalLenth) {
+			throw new exception("index should not be larger than total length of str!");
+		}
 		list<string>::iterator it = this->entityList->begin();
-		unsigned int subIndex = this->getIteratorByIndex(index, it);
-		it->erase(subIndex, 1);
-		this->totalLenth--;
-		cout << *it <<endl;
+		unsigned int subIndex = this->locateIteratorByIndex(index, it);
+
+		if (it->length() == 1) {
+			this->entityList->erase(it);
+		}
+		else {
+			it->erase(subIndex, 1);
+			this->totalLenth--;
+		}
+		return *this;
+	}
+
+	StringBuilder& deleteStr(unsigned int index, unsigned int delLength) {
+		unsigned int charCount = delLength;
+		if (index + delLength > this->totalLenth) {
+			throw new exception("The string that is about to be deleted is out of range!");
+		}
+		list<string>::iterator it = this->entityList->begin();
+		unsigned int subIndex = this->locateIteratorByIndex(index, it);
+
+		while (delLength > 0) {
+			cout << subIndex << endl;
+			if (delLength >= it->length() - subIndex) {
+				delLength -= it->length() - subIndex;
+				subIndex = 0;
+				it = this->entityList->erase(it);
+			}
+			else {
+				it->erase(subIndex, delLength);
+				delLength = 0;
+			}
+		}
+		this->totalLenth -= charCount;
 		return *this;
 	}
 
@@ -88,11 +120,7 @@ private:
 		this->isEntityInitialized = true;
 	}
 
-	unsigned int getIteratorByIndex(unsigned int index, list<string>::iterator &it) {
-		if (index > this->totalLenth) {
-			throw new exception("index should not be larger than total length of str!");
-		}
-
+	unsigned int locateIteratorByIndex(unsigned int index, list<string>::iterator &it) {
 		it = this->entityList->begin();
 
 		unsigned int currentStrIndex = 0;
