@@ -1,9 +1,11 @@
 #ifndef STRING_BUILDER_H
 #define STRING_BUILDER_H
 
+#include <assert.h>
 #include <iostream>
 #include <list>
 #include <mutex>
+
 
 using namespace std;
 
@@ -35,22 +37,57 @@ public:
 	}
 
 	StringBuilder& insert(unsigned int index, const string& str) {
-
 		string fragment = string(str);
+		unsigned int currentTotalLength = this->totalLenth;
+		if (index > this->totalLenth) {
+			throw new exception("param error: index should not be larger than total length of str!");
+		}
+		else if (index == this->totalLenth) {
+			this->entityList->push_back(fragment);
+			this->totalLenth += (unsigned int)fragment.length();
+		}
+		else {
+			list<string>::iterator it = this->entityList->begin();
+			unsigned int subIndex = this->locateByIndex(index, it);
+
+			if (subIndex == 0) {
+				this->entityList->insert(it, fragment);
+				this->totalLenth += (unsigned int)fragment.length();
+			}
+			else {
+				string remains = string(it->begin() + subIndex, it->end());
+				it->erase(subIndex);
+				this->totalLenth -= (unsigned int)remains.length();
+				it++;
+
+				this->entityList->insert(it, fragment);
+				this->totalLenth += (unsigned int)fragment.length();
+
+				this->entityList->insert(it, remains);
+				this->totalLenth += (unsigned int)remains.length();
+			}
+		}
+
+		assert(currentTotalLength + str.length() == this->totalLenth);
 
 		return *this;
 	}
 
-	StringBuilder& setCharAt(unsigned int index, const char& ch) {
-
+	StringBuilder& replace(unsigned int index, unsigned int len, const string& str) {
+		if (index > this->totalLenth) {
+			throw new exception("param error: index should not be larger than total length of str!");
+		}
+		this->deleteStr(index, len);
+		this->insert(index, str);
+		return *this;
 	}
 
 	StringBuilder& deleteCharAt(unsigned int index) {
 		if (index >= this->totalLenth) {
-			throw new exception("index should not be larger than total length of str!");
+			throw new exception("param error: index should not be larger than total length of str!");
 		}
 		list<string>::iterator it = this->entityList->begin();
-		unsigned int subIndex = this->locateIteratorByIndex(index, it);
+		unsigned int subIndex = this->locateByIndex(index, it);
 
 		if (it->length() == 1) {
 			this->entityList->erase(it);
@@ -63,25 +100,50 @@ public:
 	}
 
 	StringBuilder& deleteStr(unsigned int index, unsigned int delLength) {
-		unsigned int charCount = delLength;
+		if (0 == delLength) {
+			throw new exception("param error: the length of deleted string cannot be 0!");
+		}
+
+		unsigned int charCount = 0;
+		unsigned int expCount = delLength;
 		if (index + delLength > this->totalLenth) {
-			throw new exception("The string that is about to be deleted is out of range!");
+			throw new exception("param error: The string that is about to be deleted is out of range!");
 		}
 		list<string>::iterator it = this->entityList->begin();
-		unsigned int subIndex = this->locateIteratorByIndex(index, it);
+		unsigned int subIndex = this->locateByIndex(index, it);
 
 		while (delLength > 0) {
-			cout << subIndex << endl;
-			if (delLength >= it->length() - subIndex) {
-				delLength -= it->length() - subIndex;
-				subIndex = 0;
-				it = this->entityList->erase(it);
+			if (subIndex == 0) {
+				if (delLength >= it->length()) {
+					delLength -= (unsigned int)it->length();
+					charCount += (unsigned int)it->length();
+					it = this->entityList->erase(it);
+				}
+				else {
+					charCount += delLength;
+					it->erase(subIndex, delLength);
+					delLength = 0;
+					subIndex = 0;
+				}
 			}
 			else {
-				it->erase(subIndex, delLength);
-				delLength = 0;
+				if (delLength >= (unsigned int)it->length() - subIndex) {
+					delLength -= (unsigned int)it->length() - subIndex;
+					charCount += (unsigned int)it->length() - subIndex;
+					it->erase(subIndex);
+					subIndex = 0;
+					it++;
+				}
+				else {
+					charCount += delLength;
+					it->erase(subIndex, delLength);
+					delLength = 0;
+				}
 			}
 		}
+
+		assert(charCount == expCount);
+
 		this->totalLenth -= charCount;
 		return *this;
 	}
@@ -100,10 +162,12 @@ public:
 		}
 		cout << endl;
 	}
+
 private:
 	list<string>* entityList;
-	bool isEntityInitialized = false;
 	unsigned int totalLenth;
+	bool isEntityInitialized = false;
+
 
 	//禁止拷贝构造 与 赋值操作
 	StringBuilder(const StringBuilder&) {}
@@ -120,7 +184,7 @@ private:
 		this->isEntityInitialized = true;
 	}
 
-	unsigned int locateIteratorByIndex(unsigned int index, list<string>::iterator &it) {
+	unsigned int locateByIndex(unsigned int index, list<string>::iterator &it) {
 		it = this->entityList->begin();
 
 		unsigned int currentStrIndex = 0;
