@@ -7,6 +7,9 @@ static bool testStringBuilderDeleteStr();
 static bool testStringBuilderInsert(); 
 static bool testStringBuilderReplace();
 static bool testStringBuilderSplit();
+static bool testPerformanceAppend();
+static bool testPerformanceInsertHead();
+
 
 /*********************************************************************
  * 函数名称：testStringBuilderUnion
@@ -16,6 +19,7 @@ static bool testStringBuilderSplit();
  * 输出结果：未抛出异常，返回true
  *********************************************************************/
 static void testStringBuilderUnion() {
+	printf("\n *********** 鲁棒性测试开始 *********** \n");
 	if (!testStringBuilderInit()) {
 		throw new exception("testStringBuilderInit 失败 ×\n");
 	}
@@ -377,7 +381,7 @@ static bool testStringBuilderReplace() {
 	}
 
 	// 替换头部 （更长的字符串）
-	exp = "123cdef";
+	exp = "123def";
 	sb->replace(0, 3, "123");
 	printf("sb预期结果为%s 实际结果为%s \n", exp.c_str(), sb->toString().c_str());
 	if (sb->toString() != exp) {
@@ -390,12 +394,82 @@ static bool testStringBuilderReplace() {
 	}
 
 	// 替换头部 （更长的字符串）
-    // 替换头部 （更长的字符串）
+	exp = "aabbccdef";
+	sb->replace(0, 3, "aabbcc");
+	printf("sb预期结果为%s 实际结果为%s \n", exp.c_str(), sb->toString().c_str());
+	if (sb->toString() != exp) {
+		delete(sb);
+		printf("sb不符合预期 ×\n");
+		return false;
+	}
+	else {
+		printf("sb符合预期 √\n");
+	}
+
+    // 替换尾部 （更长的字符串）
+	exp = "aabbccdeddd";
+	sb->replace(8, 1, "ddd");
+	printf("sb预期结果为%s 实际结果为%s \n", exp.c_str(), sb->toString().c_str());
+	if (sb->toString() != exp) {
+		delete(sb);
+		printf("sb不符合预期 ×\n");
+		return false;
+	}
+	else {
+		printf("sb符合预期 √\n");
+	}
+
+	// 替换中间 （更长的字符串）
+	exp = "aabbcceeeeddd";
+	sb->replace(6, 1, "eee");
+	printf("sb预期结果为%s 实际结果为%s \n", exp.c_str(), sb->toString().c_str());
+	if (sb->toString() != exp) {
+		delete(sb);
+		printf("sb不符合预期 ×\n");
+		return false;
+	}
+	else {
+		printf("sb符合预期 √\n");
+	}
 
 	// 替换头部 （更短的字符串）
-	// 替换头部 （更短的字符串）
-	// 替换头部 （更短的字符串）
+	exp = "cccceeeeddd";
+	sb->replace(0, 4, "cc");
+	printf("sb预期结果为%s 实际结果为%s \n", exp.c_str(), sb->toString().c_str());
+	if (sb->toString() != exp) {
+		delete(sb);
+		printf("sb不符合预期 ×\n");
+		return false;
+	}
+	else {
+		printf("sb符合预期 √\n");
+	}
 
+	// 替换尾部 （更短的字符串）
+	exp = "cccceeeedaa";
+	sb->replace(9, 2, "aa");
+	printf("sb预期结果为%s 实际结果为%s \n", exp.c_str(), sb->toString().c_str());
+	if (sb->toString() != exp) {
+		delete(sb);
+		printf("sb不符合预期 ×\n");
+		return false;
+	}
+	else {
+		printf("sb符合预期 √\n");
+	}
+
+	// 替换中间 （更短的字符串）
+	exp = "ccccaadaa";
+	sb->replace(4, 4, "aa");
+	printf("sb预期结果为%s 实际结果为%s \n", exp.c_str(), sb->toString().c_str());
+	if (sb->toString() != exp) {
+		delete(sb);
+		printf("sb不符合预期 ×\n");
+		return false;
+	}
+	else {
+		printf("sb符合预期 √\n");
+	}
 
 	printf("----------- testStringBuilderReplace 测试成功 √ ----------- \n");
 	return true;
@@ -411,26 +485,135 @@ static bool testStringBuilderReplace() {
  *********************************************************************/
 bool testStringBuilderSplit() {
 	printf("------------ testStringBuilderSplit 测试开始 ------------ \n");
+
+
+
 	printf("----------- testStringBuilderSplit 测试成功 √ ----------- \n");
 	return true;
 }
 
 
-void test() {
-	//string a = "123";
-//clock_t  t1 = clock();
+/*********************************************************************
+ * 函数名称：testPerformanceAppend
+ * 函数功能：测试StringBuilder和string在Append上的性能差距
+ * 输入参数：None
+ * 返回参数：bool
+ * 输出结果：未抛出异常，返回true
+ *********************************************************************/
+static bool testPerformanceAppend() {
+	printf("----------- testPerformanceAppend  ----------- \n");
+	string *str = new string("");
+	StringBuilder* sb = new StringBuilder("");
+	long long numOfIterations = 1000000;
 
-//for (int i = 0; i < 1000000; i++) {
-//	//a.insert(0,"a");
-//	a.append("a");
-//}
-//clock_t  t2 = clock();
-//cout << (long double)(t2 - t1) / CLOCKS_PER_SEC << endl;
+    clock_t t1 = clock();
+	// string的append
+	for (int i = 0; i < numOfIterations; i++) {
+		str->append("a");
+	}
+	clock_t t2 = clock();
+	// StringBuilder的append
+	for (int i = 0; i < numOfIterations; i++) {
+		sb->append("a");
+	}
+	clock_t t3 = clock();
+
+	long double stringClock = (long double)(t2 - t1);
+	long double stringBuilderClock = (long double)(t3 - t2);
+
+	printf("string的append消耗 %lf CLOCKS, StringBuilder的append消耗 %lf CLOCKS\n", 
+		stringClock, stringBuilderClock);
+	printf("string的append消耗 %lf seconds, StringBuilder的append消耗 %lf seconds\n",
+		stringClock / CLOCKS_PER_SEC, stringBuilderClock / CLOCKS_PER_SEC);
+	printf("StringBuilder的头部Insert性能大约是string的Insert性能的 %lf %% \n", 100 / (stringBuilderClock / stringClock));
+
+	printf("----------- testPerformanceAppend 测试成功 √ ----------- \n");
+	return true;
 }
 
 
+/*********************************************************************
+ * 函数名称：testPerformanceInsertHead
+ * 函数功能：测试StringBuilder和string在头部Insert上的性能差距
+ * 输入参数：None
+ * 返回参数：bool
+ * 输出结果：未抛出异常，返回true
+ *********************************************************************/
+static bool testPerformanceInsertHead() {
+	printf("----------- testPerformanceInsertHead  ----------- \n");
+	string* str = new string("aaaaaaaaaaa");
+	StringBuilder* sb = new StringBuilder("aaaaaaaaaaa");
+	long long numOfIterations = 1000000;
 
+	clock_t t1 = clock();
+	// string的append
+	for (int i = 0; i < numOfIterations; i++) {
+		str->insert(0, "a");
+	}
+	clock_t t2 = clock();
+	// StringBuilder的append
+	for (int i = 0; i < numOfIterations; i++) {
+		sb->insert(0, "a");
+	}
+	clock_t t3 = clock();
+
+	long double stringClock = (long double)(t2 - t1);
+	long double stringBuilderClock = (long double)(t3 - t2);
+
+	printf("string的头部Insert消耗 %lf CLOCKS, StringBuilder的Insert消耗 %lf CLOCKS\n",
+		stringClock, stringBuilderClock);
+	printf("string的头部Insert消耗 %lf seconds, StringBuilder的Insert消耗 %lf seconds\n",
+		stringClock / CLOCKS_PER_SEC, stringBuilderClock / CLOCKS_PER_SEC);
+	printf("StringBuilder的头部Insert性能大约是string的Insert性能的 %lf %% \n", 100 / (stringBuilderClock / stringClock));
+
+	printf("----------- testPerformanceInsertHead 测试成功 √ ----------- \n");
+	return true;
+}
+
+
+/*********************************************************************
+ * 函数名称：testPerformanceInsertMeddle
+ * 函数功能：测试StringBuilder和string在中间Insert上的性能差距
+ * 输入参数：None
+ * 返回参数：bool
+ * 输出结果：未抛出异常，返回true
+ *********************************************************************/
+static bool testPerformanceInsertMeddle() {
+	printf("----------- testPerformanceInsertMeddle  ----------- \n");
+	string* str = new string("aaaaaaaaaa");
+	StringBuilder* sb = new StringBuilder("aaaaaaaaaa");
+	long long numOfIterations = 10000;
+
+	clock_t t1 = clock();
+	// string的append
+	for (int i = 0; i < numOfIterations; i++) {
+		str->insert(7, "a");
+	}
+	clock_t t2 = clock();
+	// StringBuilder的append
+	for (int i = 0; i < numOfIterations; i++) {
+		sb->insert(7, "a");
+	}
+	clock_t t3 = clock();
+
+	long double stringClock = (long double)(t2 - t1);
+	long double stringBuilderClock = (long double)(t3 - t2);
+
+	printf("string的中间Insert消耗 %lf CLOCKS, StringBuilder的Insert消耗 %lf CLOCKS\n",
+		stringClock, stringBuilderClock);
+	printf("string的中间Insert消耗 %lf seconds, StringBuilder的Insert消耗 %lf seconds\n",
+		stringClock / CLOCKS_PER_SEC, stringBuilderClock / CLOCKS_PER_SEC);
+	printf("StringBuilder的头部Insert性能大约是string的Insert性能的 %lf %% \n", 100 / (stringBuilderClock / stringClock));
+
+	printf("----------- testPerformanceInsertMeddle 测试成功 √ ----------- \n");
+	return true;
+}
 
 int main() {
 	testStringBuilderUnion();
+
+	printf("\n *********** 性能测试开始 *********** \n");
+	testPerformanceAppend();
+	testPerformanceInsertHead();
+	testPerformanceInsertMeddle();
 }

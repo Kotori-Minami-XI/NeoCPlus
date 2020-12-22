@@ -4,8 +4,8 @@
 #include <assert.h>
 #include <iostream>
 #include <list>
+#include <vector>
 #include <mutex>
-
 
 using namespace std;
 
@@ -30,29 +30,27 @@ public:
 	}
 
 	StringBuilder& append(const string& str) {
-		string fragment = string(str);
-		this->entityList->push_back(fragment);
+		this->entityList->push_back(str);
 		this->totalLenth += (unsigned int)str.length();
 		return *this;
 	}
 
 	StringBuilder& insert(unsigned int index, const string& str) {
-		string fragment = string(str);
 		unsigned int currentTotalLength = this->totalLenth;
 		if (index > this->totalLenth) {
 			throw new exception("param error: index should not be larger than total length of str!");
 		}
 		else if (index == this->totalLenth) {
-			this->entityList->push_back(fragment);
-			this->totalLenth += (unsigned int)fragment.length();
+			this->entityList->push_back(str);
+			this->totalLenth += (unsigned int)str.length();
 		}
 		else {
 			list<string>::iterator it = this->entityList->begin();
 			unsigned int subIndex = this->locateByIndex(index, it);
 
 			if (subIndex == 0) {
-				this->entityList->insert(it, fragment);
-				this->totalLenth += (unsigned int)fragment.length();
+				this->entityList->insert(it, str);
+				this->totalLenth += (unsigned int)str.length();
 			}
 			else {
 				string remains = string(it->begin() + subIndex, it->end());
@@ -60,8 +58,8 @@ public:
 				this->totalLenth -= (unsigned int)remains.length();
 				it++;
 
-				this->entityList->insert(it, fragment);
-				this->totalLenth += (unsigned int)fragment.length();
+				this->entityList->insert(it, str);
+				this->totalLenth += (unsigned int)str.length();
 
 				this->entityList->insert(it, remains);
 				this->totalLenth += (unsigned int)remains.length();
@@ -148,12 +146,30 @@ public:
 		return *this;
 	}
 
+	// TODO: Finish this one
+	vector<StringBuilder> split(const string &symbol) {
+		vector<StringBuilder> res;
+		if ("" == symbol) {
+			return res;
+		}
+		list<string>::iterator frontIter = this->entityList->begin();
+		list<string>::iterator backIter = this->entityList->begin();
+		while (backIter != this->entityList->end() && (*backIter).find(symbol) == -1) {
+			backIter++;
+		}
+		return res;
+	}
+
 	string toString() {
 		string str = "";
 		for (auto it = this->entityList->begin(); it != this->entityList->end(); it++) {
 			str = str + *it;
 		}
 		return str;
+	}
+
+	unsigned int getTotalLenth() {
+		return this->totalLenth;
 	}
 
 	static void printStringBuilder(StringBuilder& sb) {
